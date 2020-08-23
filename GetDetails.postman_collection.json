@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "3e267460-1756-452d-81a3-74829b747a82",
+		"name": "GetDetails",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "641297d7-22f7-478c-96ce-1cce3b8af6eb",
+						"exec": [
+							"pm.test(\"Validate status code\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"//access an environment variable",
+							"var csvdata = pm.environment.get(\"csv_data\");",
+							"console.log(csvdata);",
+							"const parse = require('csv-parse/lib/sync');",
+							"const assert = require('assert');",
+							"//Environmental variable where we copy-pasted the csv content",
+							"//const input =pm.environment.get(\"data\");",
+							"const records = parse(csvdata, {",
+							" columns: true,",
+							" skip_empty_lines: true",
+							"})",
+							"console.log(records)",
+							"var response = pm.response.json();",
+							"var alldata = response.all;",
+							"//assert.deepEqual(records, alldata);",
+							"var i;",
+							"//id\ttext\ttype\tuser.id\tuser.name.first\tuser.name.last\tupvotes\tuserUpvoted",
+							"pm.expect(alldata.length).to.eql(records.length);",
+							"for (i = 0; i < alldata.length; i++) {",
+							"  pm.expect(alldata[i]._id).to.eql(records[i]._id);",
+							"  pm.expect(alldata[i].text).to.eql(records[i].text);",
+							"  pm.expect(alldata[i].type).to.eql(records[i].type);",
+							"  pm.expect(alldata[i].user._id).to.eql(records[i].user.id);",
+							"  pm.expect(alldata[i].user.name.first).to.eql(records[i].user.name.first);",
+							"  pm.expect(alldata[i].user.name.last).to.eql(records[i].user.name.last);",
+							"  ",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://cat-fact.herokuapp.com/facts",
+					"protocol": "https",
+					"host": [
+						"cat-fact",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"facts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

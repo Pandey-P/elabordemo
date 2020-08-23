@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "3c35bcb7-cd83-4818-8bfc-e768d8469d7a",
+		"name": "Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetFactsBasedOnID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ffd4f459-dc39-45a4-99eb-1a0e64a13b83",
+						"exec": [
+							"//_id\ttext\ttype\tuser.id\tuser.name.first\tuser.name.last\tupvotes\tuserUpvoted",
+							"pm.test(\"Validate response code to be 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify response attributes\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson._id).to.eql(pm.iterationData.get(\"_id\"));",
+							"  pm.expect(responseJson.text).to.eql(pm.iterationData.get(\"text\"));",
+							"  pm.expect(responseJson.type).to.eql(pm.iterationData.get(\"type\"));",
+							"  pm.expect(responseJson.user).to.eql(pm.iterationData.get(\"user.id\"));",
+							"  ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/facts/{{_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"facts",
+						"{{_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
